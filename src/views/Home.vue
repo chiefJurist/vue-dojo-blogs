@@ -1,10 +1,10 @@
 <template>
     <div class="home">
-        home
-        <p ref="para">
-            My name is {{ name }} and my age is {{ age }}
-        </p>
-        <button @click="handleClick">Click me</button>
+        <h1>Home</h1>
+        <p>My name is {{ name }} and my age is {{ age }}</p>
+        <button @click="handleClick">Click me</button><br>
+        <button @click="age++">Click to add 1 to age</button><br>
+        <input type="text" v-model="name">
     </div>
 </template>
 
@@ -14,22 +14,15 @@
     export default {
         name: 'Home',
         setup(){
-            console.log('setup')
-
-            //Using template refs in composition api
-            //Don't use the refs before you return them
-            const para = ref(null)
-            let name = "Anthony"
-            let age = 20
+            const name = ref("Anthony")
+            const age = ref(20)
 
             const handleClick = ()=> {
-                console.log(para, para.value)
-                //Work with the value and not just the name of the ref
-                para.value.classList.add('test')
-                para.value.textContent = "Hello, Ninjas"
+                name.value = "Luigi"
+                age.value = 35
             }
 
-            return{name, age, handleClick, para}
+            return{name, age, handleClick}
         }
     }
 </script>
