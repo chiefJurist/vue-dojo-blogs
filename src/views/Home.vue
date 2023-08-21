@@ -1,27 +1,52 @@
 <template>
     <div class="home">
         <h1>Home</h1>
-        <PostList v-if="showPosts" :posts="posts" /><br>
-        <button @click="showPosts = !showPosts">toggle post</button>
-        <button @click="posts.pop()">delete a post</button>
+
+        <!--Outputting error-->
+        <div v-if="error">{{ error }}</div>
+
+        <!--For outputing the array only when it has been populated-->
+        <div v-if="posts.length">
+            <PostList :posts="posts" />
+        </div>
+
+        <div v-else>Loading...</div>
     </div>
 </template>
+
 
 <script>
     import PostList from '../components/PostList.vue'
     import {  ref } from 'vue'
+
     export default {
         name: 'Home',
         components: { PostList },
         setup(){
-            const posts = ref([
-                {title: 'Welcome to the blog', body: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iusto, autem exercitationem. Voluptate veniam repellendus quasi ullam similique dicta est quam culpa natus dolor pariatur earum consequatur officiis laudantium possimus, deserunt qui quisquam sapiente at voluptas expedita repudiandae, nisi commodi in! Quidem, aspernatur aliquam nulla, rerum, placeat dolor neque saepe alias in facilis deleniti! Dignissimos reiciendis autem quos molestiae facere, soluta culpa velit itaque, eligendi rerum nobis tempora, tempore officiis placeat voluptatem nesciunt! Fugiat quidem maiores, assumenda dolorum placeat est aliquam minus beatae voluptates corporis maxime, consequatur error. Commodi vitae alias nam veniam enim, molestiae dolorem esse, corrupti id ex nihil.', id: 1},
-                {title: 'Top 5 CSS tips', body: 'Lorem ipsum', id: 2}
-            ])
+            const posts = ref([])
+            const error = ref(null)
 
-            const showPosts = ref(true)
+            //Using Asynchronous JavaScript
+            const load = async () => {
+                try {
+                    let data = await fetch('http://localhost:3000/posts')
+                    //For when the data is not okay
+                    //".ok" can be seen in the console if we log "data" to the console
+                    if (!data.ok) {
+                        throw Error('No data available')
+                    }
+                    //Updating the post array
+                    posts.value = await data.json()
+                } catch (err) {
+                    error.value = err.message
+                    console.log(error.value)
+                }
+            }
 
-            return { posts,showPosts }
+            //Calling the function
+            load()
+
+            return { posts,error }
         }
     }
 </script>
