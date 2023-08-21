@@ -9,7 +9,6 @@
 import { computed } from 'vue'
     export default {
         props: ['post'],
-        //To output a snippet
         setup(props){
             const snippet = computed(() => {
                 return props.post.body.substring(0, 100) + '...'
