@@ -21,5 +21,16 @@
 </script>
 
 <style>
-
+    .post{
+        margin: 0 auto;
+        max-width: 1200px;
+    }
+    .post p{
+        color: #444;
+        line-height: 1.5rem;
+        margin-top: 40px;
+    }
+    .pre{
+        white-space: pre-wrap;
+    }
 </style>
